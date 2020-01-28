@@ -67,7 +67,7 @@ func (t *OptimumChaincode) getAuthUrl(stub shim.ChaincodeStubInterface, args []s
 
 	config, err := google.ConfigFromJSON(credentials, gmail.GmailReadonlyScope)
 	if err != nil {
-			log.Fatalf("Unable to parse client secret credentials to config: %v", err)
+		log.Fatalf("Unable to parse client secret credentials to config: %v", err)
 	}
 	authURL := config.AuthCodeURL("state-token", oauth2.AccessTypeOffline)
 	fmt.Printf("Go to the following link in your browser to get auth token: \n%v\n", authURL)
@@ -118,31 +118,31 @@ func (t *OptimumChaincode) getLabels(stub shim.ChaincodeStubInterface, args []st
 
 	config, err := google.ConfigFromJSON(credentials, gmail.GmailReadonlyScope)
 	if err != nil {
-			log.Fatalf("Unable to parse client secret credentials to config: %v", err)
+		log.Fatalf("Unable to parse client secret credentials to config: %v", err)
 	}
 
 	tok, err := config.Exchange(context.TODO(), authCode)
 	if err != nil {
-			log.Fatalf("Unable to retrieve token from web: %v", err)
+		log.Fatalf("Unable to retrieve token from web: %v", err)
 	}
 	client := config.Client(context.Background(), tok)
 
 	srv, err := gmail.New(client)
 	if err != nil {
-			log.Fatalf("Unable to retrieve Gmail client: %v", err)
+		log.Fatalf("Unable to retrieve Gmail client: %v", err)
 	}
 
 	user := "me"
 	r, err := srv.Users.Labels.List(user).Do()
 	if err != nil {
-			log.Fatalf("Unable to retrieve labels: %v", err)
+		log.Fatalf("Unable to retrieve labels: %v", err)
 	}
 	if len(r.Labels) == 0 {
-			fmt.Println("No labels found.")
+		fmt.Println("No labels found.")
 	}
 	fmt.Print("Gmail Labels: ")
 	for _, l := range r.Labels {
-			fmt.Printf("[%s] ", l.Name)
+		fmt.Printf("[%s] ", l.Name)
 	}
 	fmt.Println()
 
